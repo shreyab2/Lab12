@@ -1,8 +1,12 @@
 package edu.illinois.cs.cs125.spring2019.lab12;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -13,81 +17,75 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.view.View;
+import android.support.v4.app.NotificationManagerCompat;
+import android.widget.EditText;
+
+import static edu.illinois.cs.cs125.spring2019.lab12.Notifications.CHANNEL_1_ID;
 
 /**
  * Main class for our UI design lab.
  */
 public final class MainActivity extends AppCompatActivity {
-    /** Default logging tag for messages from the main activity. */
-    private static final String TAG = "Lab12:Main";
-
-    /** Request queue for our API requests. */
-    private static RequestQueue requestQueue;
-
     /**
-     * Run when this activity comes to the foreground.
-     *
-     * @param savedInstanceState unused
+     * shows all notifications.
+     */
+    private NotificationManagerCompat notificationManager;
+    /**
+     * edit text title.
+     */
+    private EditText editTextTitle;
+    /**
+     * edit text message.
+     */
+    private EditText editTextMessage;
+    /**
+     * runs when the app starts.
+     * @param savedInstanceState
      */
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Set up the queue for our API requests
-        requestQueue = Volley.newRequestQueue(this);
-
         setContentView(R.layout.activity_main);
 
-        startAPICall("192.17.96.8");
+        notificationManager = NotificationManagerCompat.from(this);
+
+        editTextTitle = findViewById(R.id.edit_text_title);
+        editTextMessage = findViewById(R.id.edit_text_message);
     }
 
     /**
-     * Run when this activity is no longer visible.
+     * notification that goes through channel 1.
+     * @param v notification
      */
-    @Override
-    protected void onPause() {
-        super.onPause();
+    public void sendOnChannel1(final View v) {
+        String title = editTextTitle.getText().toString();
+        String message = editTextMessage.getText().toString();
+
+        Notification notification = new NotificationCompat.Builder(this, Notifications.CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_one)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+        notificationManager.notify(1, notification);
     }
 
     /**
-     * Make a call to the IP geolocation API.
-     *
-     * @param ipAddress IP address to look up
+     * notification that goes through channel 2.
+     * @param v notification
      */
-    void startAPICall(final String ipAddress) {
-        try {
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                    Request.Method.GET,
-                    "https://ipinfo.io/" + ipAddress + "/json",
-                    null,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(final JSONObject response) {
-                            apiCallDone(response);
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(final VolleyError error) {
-                            Log.e(TAG, error.toString());
-                        }
-                    });
-            jsonObjectRequest.setShouldCache(false);
-            requestQueue.add(jsonObjectRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    public void sendOnChannel2(final View v) {
+        String title = editTextTitle.getText().toString();
+        String message = editTextMessage.getText().toString();
 
-    /**
-     * Handle the response from our IP geolocation API.
-     *
-     * @param response response from our IP geolocation API.
-     */
-    void apiCallDone(final JSONObject response) {
-        try {
-            Log.d(TAG, response.toString(2));
-            // Example of how to pull a field off the returned JSON object
-            Log.i(TAG, response.get("hostname").toString());
-        } catch (JSONException ignored) { }
+        Notification notification = new NotificationCompat.Builder(this, Notifications.CHANNEL_2_ID)
+                .setSmallIcon(R.drawable.ic_two)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .build();
+        notificationManager.notify(2, notification);
     }
 }
