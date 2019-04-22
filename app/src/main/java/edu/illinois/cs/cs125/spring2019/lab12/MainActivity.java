@@ -5,23 +5,13 @@ import android.app.NotificationManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 import android.view.View;
 import android.support.v4.app.NotificationManagerCompat;
 import android.widget.EditText;
 
 import static edu.illinois.cs.cs125.spring2019.lab12.Notifications.CHANNEL_1_ID;
+import static edu.illinois.cs.cs125.spring2019.lab12.Notifications.CHANNEL_2_ID;
 
 /**
  * Main class for our UI design lab.
@@ -62,7 +52,7 @@ public final class MainActivity extends AppCompatActivity {
         String title = editTextTitle.getText().toString();
         String message = editTextMessage.getText().toString();
 
-        Notification notification = new NotificationCompat.Builder(this, Notifications.CHANNEL_1_ID)
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.ic_one)
                 .setContentTitle(title)
                 .setContentText(message)
@@ -80,7 +70,7 @@ public final class MainActivity extends AppCompatActivity {
         String title = editTextTitle.getText().toString();
         String message = editTextMessage.getText().toString();
 
-        Notification notification = new NotificationCompat.Builder(this, Notifications.CHANNEL_2_ID)
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_2_ID)
                 .setSmallIcon(R.drawable.ic_two)
                 .setContentTitle(title)
                 .setContentText(message)
