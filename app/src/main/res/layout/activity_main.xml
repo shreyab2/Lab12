@@ -28,7 +28,7 @@
      android:id="@+id/edit_hour"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
-     android:hint="Set hour (Millitary time)"
+     android:hint="Set hour"
      android:inputType="number" />
 
     <EditText
